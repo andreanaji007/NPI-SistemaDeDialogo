@@ -1,0 +1,5 @@
+#JSGF V1.0;
+
+grammar ciudades;
+
+public <ciudades> = Granada | Ceuta | Melilla | granada | ceuta | melilla;

@@ -1,0 +1,11 @@
+#JSGF V1.0;
+
+grammar facultades;
+
+public <facultades> = informatica | ETSIIT | Telecomunicaciones | Ingeniería Informática
+                     | arquitectura | trabajo | ciencias del trabajo | politicas | ciencias politicas 
+                     | sociologia | derecho | trabajo social | traduccion | interpretacion | deporte
+                     | deportes | ciencias del deporte | educacion | ciencias de la educacion | magisterio | economia
+                     | ciencias economicas | empresariales | comunicacion | odontologia | documentacion | filosofia
+                     | filosofia y letras | psicologia | caminos | ingenieria de caminos | edificacion | ingenieria de edificacion
+                     | ciencias | bellas artes | salud | ciencias de la salud | enfermeria | medicina | PTS;

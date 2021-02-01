@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version = "2.1"  xml:lang="es-ES">
+	<!-- Link necesario para pedir ayuda cuando el usuario la requiera. -->
+    <link event="help">
+       <grammar mode="voice"
+             root="root_rule"
+             version="1.0"
+             xml:lang="es-ES">
+          <rule id="root_rule">
+            <one-of>
+                <item>ayuda</item>
+                <item>ayudame</item>
+                <item>ayuda por favor</item>
+                <item>por favor, ayuda</item>
+                <item>ayudame por favor</item>
+                <item>por favor, ayudame</item>
+            </one-of>
+          </rule>
+       </grammar>
+    </link>
+<!-- Link para terminar la llamada -->
+    <link event="com.mycomp.myapp.onquit">
+        <grammar mode="voice"
+         root="root_rule"
+         tag-format="semantics/1.0"
+         type="application/srgs+xml"
+         version="1.0"
+         xml:lang="es-ES">
+            <rule id="root_rule" scope="public">
+                <one-of>
+                    <item>
+                        adios
+                    </item>
+                    <item>
+                        fin
+                    </item>
+                    <item>
+                        hasta luego
+                    </item>
+                    <item>
+                        salir
+                    </item>
+                </one-of>
+            </rule>
+        </grammar>
+    </link>
+
+	<script src="calcularMenu.js"/>
+	<var name="tipo_menu" expr="'normal'"/>
+	<var name="para_llevar" expr="'no'"/>
+	
+
+	<form id="mainMenu">
+        <block bargein="false">
+            <prompt>
+                Bienvenido al sistema de información de menus de la UGR.
+                
+                A continuación, decir AYUDA para recibir información sobre cómo utilizar el sistema.
+            </prompt>
+        </block>
+	
+
+	<!-- En primer lugar le pedimos al usuario que especifique el tipo de menu -->
+        <help>
+            <prompt>
+                Para utilizar el sistema debe seguir los siguientes pasos:
+                Primero: Elegir tipo de menu.
+                Segundo: decir que si es para llevar.
+                
+                Con todo esto, el sistema dará el precio para su menu.
+
+                Puede terminar la llamada en cualquier momento diciendo: adiós, fin, hasta luego o salir.
+            </prompt>
+            <reprompt/>
+        </help>
+        
+        <catch event="com.mycomp.myapp.onquit">
+            <prompt>
+                Muchas gracias por todo, que pase un buen día.
+            </prompt>
+            <disconnect/>
+        </catch>
+
+	<field name="Tipo">
+            <grammar src="tipo.grammar"/>
+            <prompt> Por favor, ¿que tipo de menu desea? normal o vegetariano. </prompt>
+            <prompt count="2">
+                Por favor, dime de nuevo el tipo de menu.
+            </prompt>
+
+        <noinput>
+            <prompt> No te he oído. Inténtalo de nuevo. </prompt>
+        </noinput>
+
+        <nomatch>
+            <prompt> No te he entendido bien. </prompt>
+            <reprompt/>
+        </nomatch>
+    </field>
+
+
+	<field name="confirmacion_tipo" type="boolean" cond="0.7>Tipo$.confidence">
+            <prompt> ¿Has dicho <value expr="Tipo"/>? </prompt>
+            <grammar>
+                SI_NO[
+                    [sí]{return("yes")}
+                    [no]{return("no")}
+                ]
+            </grammar>
+
+            <!-- si el usuario dice que no, se le vuelve a pedir la ciudad -->
+            <filled>
+                <if cond="!confirmacion_tipo">
+                    <clear namelist="Tipo"/>
+                    <clear namelist="confirmacion_tipo"/>
+                    <reprompt/>
+                </if>
+            </filled>
+    </field>	
+
+
+
+	<!-- Después, le pedimos que especifique si es para llevar o no -->
+	
+        <field name="LLevar">
+            <grammar src="llevar.grammar"/>
+            <prompt>
+            
+                Ahora dime si lo desea para llevar.
+            </prompt>
+            <noinput>
+                <prompt>
+                    No te he oído. Inténtalo de nuevo.
+                </prompt>
+            </noinput>
+
+            <nomatch>
+                <prompt>
+                    No te he entendido bien.
+                </prompt>
+                <reprompt/>
+            </nomatch>
+
+	</field>
+
+	<field name="confirmacion_llevar" type="boolean" cond="0.7>Llevar$.confidence">
+            <prompt> ¿Has dicho <value expr="Llevar"/>? </prompt>
+            <grammar>
+                SI_NO[
+                    [sí]{return("yes")}
+                    [no]{return("no")}
+                ]
+            </grammar>
+
+            <!-- si el usuario dice que no, se le vuelve a pedir llevar -->
+            <filled>
+                <if cond="!confirmacion_llevar">
+                    <clear namelist="Llevar"/>
+                    <clear namelist="confirmacion_llevar"/>
+                    <reprompt/>
+                </if>
+            </filled>                
+        </field>
+
+
+	<field name="Precio">
+            <prompt>
+                El precio del menu es <value expr="calcularPrecioFinal(Tipo, Llevar)"/>
+            </prompt>
+
+	</field>
+
+	
+
+		
+
+    </form>	
+
+
+
+</vxml>
+

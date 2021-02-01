@@ -1,0 +1,24 @@
+<vxml version="2.1" xml:lang="es-ES">
+    <catch event="help_citas">
+        <prompt>Las opciones disponibles de citas son: reserva, cancelacion, modificaciony consulta.</prompt>
+        <reprompt/>
+    </catch>
+
+    <catch event="help_horarios">
+        <prompt>Los horarios disponibles son: mañana o de tarde. </prompt>
+        <reprompt/>
+    </catch>
+
+    <catch event="exit_español">
+        <prompt>Muchas gracias por haber usado nuestro servicio. Hasta la proxima.</prompt>
+        <exit/>
+    </catch>
+    
+    <catch event="help_salir">
+        <prompt> Si quiere hacer otra consulta diga: consultar otra cita, reservar o cancelar. 
+                Tambien puede dejar una sugerencia o salir de la aplicacion.
+        </prompt>
+    </catch>
+   
+
+</vxml>

@@ -1,0 +1,14 @@
+<vxml version="2.1" xml:lang="es-ES" application="root.vxml">
+  <script src="saludar.js"/>
+
+  <catch event="nomatch noinput" count ="3">
+    <exit/>
+  </catch>
+
+  <menu>
+    <property name="bargein" value="false"/> 
+    <prompt><value expr="greetEsp()"/> . Bienvenido a <emphasis> Best </emphasis></prompt>
+    
+    
+  </menu>
+</vxml>
